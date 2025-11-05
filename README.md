@@ -2,14 +2,14 @@ Thermoelectric Generator (TEG) Prediction Project
 
 Overview:
 
-This project explores how thermoelectric generators (TEGs) behave under different conditions, focusing on predicting power output and efficiency using machine learning.
+This project evaluates machine learning models for predicting the performance of a Thermoelectric Generator (TEG). The objective is to identify the most accurate model for predicting TEG power output and efficiency based on its physical operating conditions.
 
 The dataset includes features such as temperature difference across the module (ΔT), electrical load resistance, and Seebeck coefficient. The target variables are power generated (W) and efficiency (%).
 
-Steps in the Project:
 1) Data Preparation
+A synthetic dataset of 5,000 samples was generated using NumPy and Pandas. This approach provided a controlled environment to test model performance on data with known non-linear relationships (derived from physics formulas, e.g., $P = V^2 / R$). 
 
-     Loaded raw dataset (TEG_with_targets.csv).
+ 2) Loaded raw dataset (TEG_with_targets.csv).
 
      Identified input features:
 
@@ -25,32 +25,41 @@ Steps in the Project:
 
         Efficiency (%)
 
-2) Feature Scaling
+3) Feature Scaling
 
     Applied MinMaxScaler to scale both features and target variables into a 0–1 range.
 
     Created a combined dataset (TEG_ml.csv) for model training.
 
-3) Model Training
+4) Model Training
 
-    Used and compared linear regression and random forest model to predict power and efficiency from the scaled features.
+    Five different regression models were trained and evaluated.
 
-    Split data into training and testing sets.
+    Performance was measured using the R² (Coefficient of Determination) score and Mean Squared Error (MSE) on the test set.
 
-    Evaluated predictions against actual values using standard regression metrics (e.g., R², MSE).
+          Model	R² Score (Higher is better)    	MSE (Lower is better)
+   
+          XGBoost	~0.996     	~0.000035
+   
+          Random Forest	~0.992	~0.000075
+   
+          Decision Tree	~0.985	~0.000140
+   
+          K-Nearest Neighbors	~0.973	~0.000256
+   
+          Linear Regression	~0.519	~0.004500
 
-4) Observations
+6) Observations
 
-    Power and efficiency both increased with ΔT up to an optimal point, then leveled off.
+   Impact of Non-Linearity: The Linear Regression model performed poorly, with an R² score of ~0.519. This was expected, as     the model cannot capture the non-linear relationships inherent in the data's physics-based formulas.
 
-    Load resistance strongly influenced output performance.
+   Effectiveness of Non-Linear Models: All other models, which can handle non-linear structures (Decision Tree, KNN, Random     Forest, XGBoost), performed very well, achieving R² scores above 97%.
 
-    The trained model could reasonably capture these relationships.
+   Benefit of Ensemble Methods: The Random Forest (R² ~0.992) outperformed the single Decision Tree (R² ~0.985),                demonstrating the stability and accuracy gains from the "bagging" technique.
 
-5) Results
+   Superior Performance of Boosting: The XGBoost model (R² ~0.996) yielded the best performance. This indicates that the        "boosting" technique (sequential learning from errors) was the most effective method for this specific dataset.
 
-    Model was able to predict both targets with fair accuracy and a R2 score of 99%.
+7) Conclusion
 
-    Example predicted vs actual plots showed good alignment, indicating the model learned meaningful patterns.
-
+    This project successfully demonstrated the importance of model selection for non-linear regression problems. The results     clearly show that simple linear models are inadequate for this task. Ensemble and boosting algorithms provided far           superior performance, with XGBoost emerging as the most accurate model, achieving an R² score of 0.996 on the test data.
 
